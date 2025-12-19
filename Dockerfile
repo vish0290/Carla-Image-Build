@@ -6,20 +6,8 @@ WORKDIR /workspace
 # -------------------------
 # 1. System dependencies (minimal, headless)
 # -------------------------
-RUN apt-get update && apt-get install -y \
-    wget \
-    tar \
-    xz-utils \
-    sudo \
-    software-properties-common \
-    libgl1 \
-    libglib2.0-0 \
-    libxrender1 \
-    libxrandr2 \
-    libxinerama1 \
-    libxcursor1 \
-    libxi6 \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y wget tar xz-utils sudo software-properties-common libgl1 libglib2.0-0 libxrender1 libxrandr2 libxinerama1 libxcursor1 libxi6 libxinerama1 libxcursor1 libxi6 
+
 
 # -------------------------
 # 2. Create non-root user for CARLA
@@ -30,13 +18,14 @@ RUN useradd -m -s /bin/bash carlauser && \
 # -------------------------
 # 3. Install Python 3.7 (CARLA Python API requirement)
 # -------------------------
-RUN add-apt-repository ppa:deadsnakes/ppa && \
-    apt-get update && \
-    apt-get install -y \
-    python3.7 \
-    python3.7-venv \
-    python3.7-distutils && \
-    rm -rf /var/lib/apt/lists/*
+RUN apt update && \
+    apt install -y \
+    python3.10 \
+    python3.10-venv \
+    python3.10-distutils \
+    python3-pip \
+    ca-certificates
+
 
 # -------------------------
 # 4. Download and extract CARLA 0.9.15
@@ -51,7 +40,7 @@ RUN mkdir -p /workspace/carla && \
 # -------------------------
 # 5. Setup CARLA Python 3.7 virtual environment
 # -------------------------
-RUN python3.7 -m venv /workspace/carla/env && \
+RUN python3.10 -m venv /workspace/carla/env && \
     /workspace/carla/env/bin/pip install --upgrade pip setuptools wheel && \
     /workspace/carla/env/bin/pip install \
         /workspace/carla/PythonAPI/carla/dist/carla*cp37*.whl && \
